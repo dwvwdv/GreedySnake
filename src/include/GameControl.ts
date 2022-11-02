@@ -1,29 +1,24 @@
 import Food from './Food';
 import ScorePanel from './ScorePanel';
 import Snake from './snake';
+import Direction from './Direction';
 
-enum Direction {
-    Up = 'w',
-    Left = 'a',
-    Right = 'd',
-    Down = 's',
-    Stop = ' '
-};
 
 class GameColtrol {
 
     snake: Snake;
     scorePanel: ScorePanel;
     food: Food;
-    direction:Direction = Direction.Stop;
-    FixSpeed:number = 150;
+    FixSpeed: number = 150;
     isOver = false;
+    direction: Direction;
 
     constructor() {
         this.snake = new Snake();
         this.scorePanel = new ScorePanel();
         this.food = new Food();
 
+        this.direction = Direction.Stop;
         this.init();
     }
 
@@ -31,45 +26,47 @@ class GameColtrol {
         document.addEventListener('keydown', this.keydownHandler.bind(this));
         this.run();
     }
-    
+
     keydownHandler(event: KeyboardEvent) {
-        if(event.key === Direction.Down || event.key === Direction.Up ||
+        if (event.key === Direction.Down || event.key === Direction.Up ||
             event.key === Direction.Left || event.key === Direction.Right ||
-            event.key === Direction.Stop)
+            event.key === Direction.Stop) {
             this.direction = event.key;
-    }
-
-    run(){
-        let Y = this.snake.Y;
-        let X = this.snake.X;
-        switch(this.direction){
-            case Direction.Down:
-                Y += 10;
-                break;
-            case Direction.Up:
-                Y -= 10;
-                break;
-            case Direction.Left:
-                X -= 10;
-                break;
-            case Direction.Right:
-                X += 10;
-                break;
-            default:
-                break;
         }
-        this.snake.Y = Y;
-        this.snake.X = X;
+    }
+
+    run() {
+        this.snake.moveHead(this.direction);
+        this.checkIsEat();
         this.checkIsOver();
-        !this.isOver && setTimeout(this.run.bind(this),this.FixSpeed - this.scorePanel.level*25);
+        !this.isOver && setTimeout(this.run.bind(this), this.FixSpeed - this.scorePanel.level * 25);
     }
 
-    checkIsOver(){
-        if(this.snake.X < 0 || this.snake.Y < 0 ||
-            this.snake.X > 290 || this.snake.Y > 290)
-             this.isOver = true;
+    checkIsOver() {
+        if(this.direction === Direction.Stop)
+            return;
+        else if (this.snake.X < 0 || this.snake.Y < 0 ||
+            this.snake.X > 290 || this.snake.Y > 290) {
+            this.isOver = true;
+            alert('Game Over.');
+        }
+        for(let i=2;i<this.snake.body.length;++i){
+            let bd = this.snake.body[i] as HTMLElement;
+            if(this.snake.X === bd.offsetLeft && this.snake.Y === bd.offsetTop){
+                alert('Game Over.');
+                break;
+            }
+        }
     }
 
+    checkIsEat() {
+        if (this.food.X === this.snake.X && this.food.Y === this.snake.Y) {
+            this.food.change();
+            this.scorePanel.addScore();
+            this.snake.addBody();
+            // this.snake.moveBody();
+        }
+    }
 }
 
 export default GameColtrol;

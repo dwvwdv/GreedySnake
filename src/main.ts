@@ -3,9 +3,9 @@ import GameColtrol from './include/GameControl';
 
 const gameControl = new GameColtrol();
 
-setInterval(()=>{
-    console.log(gameControl.direction);
-});
+// setInterval(()=>{
+//     console.log(gameControl.direction);
+// });
 
 // const food = new Food();
 // console.log(food.X, food.Y);
