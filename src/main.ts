@@ -1,7 +1,12 @@
 import './style/index.less';
 import GameColtrol from './include/GameControl';
 
-new GameColtrol();
+const gameControl = new GameColtrol();
+
+setInterval(()=>{
+    console.log(gameControl.direction);
+});
+
 // const food = new Food();
 // console.log(food.X, food.Y);
 // food.change();
