@@ -1,21 +1,15 @@
-import './style/index.less'
+import './style/index.less';
+import GameColtrol from './include/GameControl';
 
+new GameColtrol();
+// const food = new Food();
+// console.log(food.X, food.Y);
+// food.change();
+// console.log(food.X,food.Y);
 
-class Food{
-    element:HTMLElement;
+// const scorePanel = new ScorePanel();
+// scorePanel.addScore();
 
-    constructor(){
-        this.element = document.getElementById('food')!;
-
-    }
-
-    get X(){
-        return this.element.offsetLeft;
-    }
-    get Y(){
-        return this.element.offsetTop;
-    }
-}
-
-const food = new Food();
-console.log(food.X,food.Y);
+// for(let i=0;i<10;++i){
+//     scorePanel.addScore();
+// }
