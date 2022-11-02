@@ -6,7 +6,8 @@ enum Direction {
     Up = 'w',
     Left = 'a',
     Right = 'd',
-    Down = 's'
+    Down = 's',
+    Stop = ' '
 };
 
 class GameColtrol {
@@ -14,7 +15,9 @@ class GameColtrol {
     snake: Snake;
     scorePanel: ScorePanel;
     food: Food;
-    direction: String = 'a';
+    direction:Direction = Direction.Stop;
+    FixSpeed:number = 150;
+    isOver = false;
 
     constructor() {
         this.snake = new Snake();
@@ -28,10 +31,11 @@ class GameColtrol {
         document.addEventListener('keydown', this.keydownHandler.bind(this));
         this.run();
     }
-
+    
     keydownHandler(event: KeyboardEvent) {
         if(event.key === Direction.Down || event.key === Direction.Up ||
-            event.key === Direction.Left || event.key === Direction.Right)
+            event.key === Direction.Left || event.key === Direction.Right ||
+            event.key === Direction.Stop)
             this.direction = event.key;
     }
 
@@ -54,7 +58,18 @@ class GameColtrol {
             default:
                 break;
         }
+        this.snake.Y = Y;
+        this.snake.X = X;
+        this.checkIsOver();
+        !this.isOver && setTimeout(this.run.bind(this),this.FixSpeed - this.scorePanel.level*25);
     }
+
+    checkIsOver(){
+        if(this.snake.X < 0 || this.snake.Y < 0 ||
+            this.snake.X > 290 || this.snake.Y > 290)
+             this.isOver = true;
+    }
+
 }
 
 export default GameColtrol;
