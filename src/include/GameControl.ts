@@ -54,6 +54,7 @@ class GameColtrol {
             let bd = this.snake.body[i] as HTMLElement;
             if(this.snake.X === bd.offsetLeft && this.snake.Y === bd.offsetTop){
                 alert('Game Over.');
+                this.isOver = true;
                 break;
             }
         }
